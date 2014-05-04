@@ -258,7 +258,6 @@ public class Train {
                 } else {
                     x = new Feature[m];
                 }
-                int indexBefore = 0;
                 for (int j = 0; j < m; j++) {
 
                     token = st.nextToken();
@@ -279,9 +278,6 @@ public class Train {
 
                     // assert that indices are valid and sorted
                     if (index < 0) throw new InvalidInputDataException("invalid index: " + index, file, lineNr);
-                    //if (index <= indexBefore) throw new InvalidInputDataException("indices must be sorted in ascending order", file, lineNr);
-                    indexBefore = index;
-
                     token = st.nextToken();
                     try {
                         double value = atof(token);

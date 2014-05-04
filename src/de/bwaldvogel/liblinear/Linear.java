@@ -239,7 +239,8 @@ public class Linear {
      *
      * <p>Note: The inputReader is <b>NOT closed</b> after reading or in case of an exception.</p>
      */
-    public static Model loadModel(Reader inputReader) throws IOException {
+    @SuppressWarnings("resource")
+	public static Model loadModel(Reader inputReader) throws IOException {
         Model model = new Model();
 
         model.label = null;
