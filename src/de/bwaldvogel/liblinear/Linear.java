@@ -461,7 +461,7 @@ public class Linear {
 
             printf(formatter, "w\n");
             for (int i = 0; i < w_size; i++) {
-            	long idx = Train.revIndexMap.get(i+1);
+            	String idx = Train.revIndexMap.get(i+1);
             	boolean nzv = false;
                 for (int j = 0; j < nr_w; j++) {
                     double value = model.w[i * nr_w + j];
@@ -474,7 +474,7 @@ public class Linear {
                     }
                     */
                     if(value != 0.0) {
-        				printf(formatter, "%d\t%.16g ",idx, value);
+        				printf(formatter, "%s\t%.16g ",idx, value);
         				nzv=true;
                     }
         			if(nzv)

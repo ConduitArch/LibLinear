@@ -30,8 +30,8 @@ public class Train {
     private Parameter param            = null;
     private Problem   prob             = null;
     
-    static Map<Long,Integer> indexMap = new HashMap<Long,Integer>();
-    static Map<Integer,Long> revIndexMap = new HashMap<Integer,Long>();
+    static Map<String,Integer> indexMap = new HashMap<String,Integer>();
+    static Map<Integer,String> revIndexMap = new HashMap<Integer,String>();
     static Map<Integer,Double> sortedMap = new TreeMap<Integer,Double>();
     
     private void do_cross_validation() {
@@ -265,13 +265,12 @@ public class Train {
                     try {
                         //index = atoi(token);
                         
-                        long idx = Long.parseLong(token);
-                        if(!indexMap.containsKey(idx)) {
+                        if(!indexMap.containsKey(token)) {
                         	int newIndex = indexMap.size()+1;
-                        	indexMap.put(idx, newIndex);
-                        	revIndexMap.put(newIndex, idx);
+                        	indexMap.put(token, newIndex);
+                        	revIndexMap.put(newIndex, token);
                         }
-                    	index = indexMap.get(idx);
+                    	index = indexMap.get(token);
                     } catch (NumberFormatException e) {
                         throw new InvalidInputDataException("invalid index: " + token, file, lineNr, e);
                     }
