@@ -55,6 +55,6 @@ public class Problem {
      * see {@link Train#readProblem(File, double)}
      */
     public static Problem readFromFile(File file, double bias) throws IOException, InvalidInputDataException {
-        return Train.readProblem(file, bias);
+        return Train.readProblemEx(file, bias);
     }
 }

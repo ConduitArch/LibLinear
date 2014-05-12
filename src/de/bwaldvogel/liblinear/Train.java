@@ -30,9 +30,9 @@ public class Train {
     private Parameter param            = null;
     private Problem   prob             = null;
     
-    static Map<String,Integer> indexMap = new HashMap<String,Integer>();
-    static Map<Integer,String> revIndexMap = new HashMap<Integer,String>();
-    static Map<Integer,Double> sortedMap = new TreeMap<Integer,Double>();
+    private Map<String,Integer> indexMap = new HashMap<String,Integer>();
+    private Map<Integer,String> revIndexMap = new HashMap<Integer,String>();
+    private Map<Integer,Double> sortedMap = new TreeMap<Integer,Double>();
     
     private void do_cross_validation() {
 
@@ -223,7 +223,11 @@ public class Train {
      * @throws IOException obviously in case of any I/O exception ;)
      * @throws InvalidInputDataException if the input file is not correctly formatted
      */
-    public static Problem readProblem(File file, double bias) throws IOException, InvalidInputDataException {
+    public static Problem readProblemEx(File file, double bias) throws IOException, InvalidInputDataException {
+        return new Train().readProblem(file, bias);
+    }
+    
+    public Problem readProblem(File file, double bias) throws IOException, InvalidInputDataException {
         BufferedReader fp = new BufferedReader(new FileReader(file));
         List<Double> vy = new ArrayList<Double>();
         List<Feature[]> vx = new ArrayList<Feature[]>();
@@ -310,7 +314,7 @@ public class Train {
     }
 
     void readProblem(String filename) throws IOException, InvalidInputDataException {
-        prob = Train.readProblem(new File(filename), bias);
+        prob = readProblem(new File(filename), bias);
     }
 
     private static int[] addToArray(int[] array, int newElement) {
@@ -365,7 +369,7 @@ public class Train {
             do_cross_validation();
         else {
             Model model = Linear.train(prob, param);
-            Linear.saveModel(new File(modelFilename), model);
+            Linear.saveModel(new File(modelFilename), model, revIndexMap);
         }
     }
 }

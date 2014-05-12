@@ -16,6 +16,7 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Formatter;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -435,7 +436,7 @@ public class Linear {
      *
      * <p><b>Note: The modelOutput is closed after reading or in case of an exception.</b></p>
      */
-    public static void saveModel(Writer modelOutput, Model model) throws IOException {
+    public static void saveModel(Writer modelOutput, Model model, Map<Integer, String> indexMapping) throws IOException {
         int nr_feature = model.nr_feature;
         int w_size = nr_feature;
         if (model.bias >= 0) w_size++;
@@ -460,8 +461,13 @@ public class Linear {
             printf(formatter, "bias %.16g\n", model.bias);
 
             printf(formatter, "w\n");
-            for (int i = 0; i < w_size; i++) {
-            	String idx = Train.revIndexMap.get(i+1);
+            for (int i = 0; i < w_size; i++) {               
+            	String idx;
+            	if (indexMapping != null) {
+            	  idx = indexMapping.get(i+1);
+            	} else {
+            	    idx = Integer.toString(i);
+            	}
             	boolean nzv = false;
                 for (int j = 0; j < nr_w; j++) {
                     double value = model.w[i * nr_w + j];
@@ -496,10 +502,11 @@ public class Linear {
     /**
      * Writes the model to the file with ISO-8859-1 charset.
      * It uses {@link java.util.Locale#ENGLISH} for number formatting.
+     * @param indexMapping 
      */
-    public static void saveModel(File modelFile, Model model) throws IOException {
+    public static void saveModel(File modelFile, Model model, Map<Integer, String> indexMapping) throws IOException {
         BufferedWriter modelOutput = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(modelFile), FILE_CHARSET));
-        saveModel(modelOutput, model);
+        saveModel(modelOutput, model, indexMapping);
     }
 
     /*
@@ -1888,5 +1895,14 @@ public class Linear {
      */
     public static void resetRandom() {
         random = new Random(DEFAULT_RANDOM_SEED);
+    }
+
+    public static void saveModel(File file, Model model) throws IOException {
+        saveModel(file, model, null);
+    }
+
+    public static void saveModel(Writer writer, Model model) throws IOException {
+        saveModel(writer, model, null);
+        
     }
 }
